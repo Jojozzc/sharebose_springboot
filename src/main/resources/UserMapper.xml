@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kele.sharebase.dao.UserDao">   <!-- 命名空间，名字可以随意起，只要不冲突即可 -->
+    <!-- 对象映射，可以不写 -->
+
+    <resultMap id="userDao" type="com.kele.sharebase.beans.User">
+        <id property="id" column="user_id" javaType="java.lang.String"></id>
+        <result property="password" column="user_password" javaType="java.lang.String"></result>
+        <result property="nickName" column="user_nickname" javaType="java.lang.String"></result>
+        <result property="email" column="user_email" javaType="java.lang.String"></result>
+        <result property="phone" column="user_phone" javaType="java.lang.String"></result>
+        <result property="regTime" column="user_regtime" javaType="java.lang.String"></result>
+    </resultMap>
+    <!-- 查询功能，resultType 设置返回值类型 -->
+    <insert id="insertUser" parameterType="com.kele.sharebase.beans.User">
+        insert into users(user_id, user_password, user_nickname, user_email, user_phone)
+            values(#{id}, #{password}, #{nickName}, #{email}, #{phone})
+    </insert>
+    <select id="queryUserById" parameterType="java.lang.String" resultMap="userDao">  <!-- 书写 SQL 语句 -->
+        SELECT * FROM users where user_id = #{id}
+    </select>
+    <select id="queryUserByNickName" parameterType="java.lang.String" resultMap="userDao">
+        SELECT * FROM users WHERE user_nickname = #{nickName}
+    </select>
+
+    <update id="updateUser" parameterType="com.kele.sharebase.beans.User">
+        update users set user_password = #{password}, user_nickname = #{nickName},
+            user_email = #{email},user_phone = #{phone} where user_id = #{id}
+    </update>
+    
+</mapper>

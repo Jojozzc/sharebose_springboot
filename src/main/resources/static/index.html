@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+		<script src="http://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
+		
+	</head>
+	<body>
+		<div id="d">
+			<input type="text" id="name">
+			<input type="password" id="pass">
+			<button type="button" id="but">提交</button>
+			<textarea id="pubkey" rows="5" cols="17">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXi/ojyCz5H7ps3Ww9PH5PZTvIwbBBEBAnX15JGLvcOBbx7yNADfsttiuI7B/zGI8w32FO5zZdBXKLNgCc2dMJ/p499QDEZEr3k5jjVbf0uJ+R+jYSB9MwObVyT+MmggA2JRR0A2UdxZisMP/5YeFM4LQ4OUASPojCgx7NqUb+NQIDAQAB
+			</textarea>
+		</div>
+		
+		
+		<script>
+			var gg = null;
+			window.onload = function() {
+				// var t=new XMLHttpRequest;
+				// 	t.onreadystatechange=function() {
+				// 	if(t.readyState==4&&t.status==200)
+				// 	{
+				// 		gg=JSON.parse(this.responseText).publicKey;
+                 //        console.log(gg);
+                //
+                //
+                 //    }
+				// 	}
+				// 	t.open("GET","http://172.20.19.249:8080/blog/login/publicKey",true);
+				// 	t.send();
+                $.ajax({
+                    url: 'http://172.20.19.249:8080/blog/login/publicKey',
+                    type: 'get',
+
+
+                    //contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        gg = JSON.parse(data).publicKey;
+                        console.log(gg);
+                    },
+                    error: function (xhr) {
+                        //console.error('出错了');
+                    }
+                });
+
+			}
+
+			function encryptRequest(data, publicKey) {
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            // ajax请求发送的数据对象
+            var sendData = new Object();
+            // 将data数组赋给ajax对象
+            for (var key in data) {
+                sendData[key] = encrypt.encrypt(data[key]);
+            }
+
+            $.ajax({
+                url: 'http://172.20.19.249:8080/blog/login/in',
+                type: 'post',
+                data: sendData,
+                dataType: 'json',
+                //contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (xhr) {
+                    //console.error('出错了');
+                }
+            });
+
+        }
+			$("#but").click(function(){
+				var data = {};
+				data['userId'] = $("#name").val();
+				data['pw'] = $("#pass").val();
+
+				 
+                encryptRequest(data, gg);
+			});
+
+	
+		</script>
+	</body>
+</html>
