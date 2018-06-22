@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.kele.sharebase.beans.User;
 import com.kele.sharebase.body.SignInResponseBody;
 import com.kele.sharebase.dao.UserDao;
+import com.kele.sharebase.utils.Base64Util;
 import com.kele.sharebase.utils.MD5Util;
 import com.kele.sharebase.utils.MybatisUtil;
 import com.kele.sharebase.utils.RSAUtil;
@@ -28,13 +29,14 @@ public class SignInController {
         if(userId == null || password == null){
             responseBody.setCode(4002);
             responseBody.setMessage("缺少必要参数");
+            System.out.println("缺少必要参数");
         }
         else {
             try {
 
                 // 解码
-                password = new String(rsaUtil.decrypt(password.getBytes(), rsaUtil.getDefaultPrivate()));
-                userId = new String(rsaUtil.decrypt(userId.getBytes(), rsaUtil.getDefaultPrivate()));
+                password = new String(rsaUtil.decrypt(Base64Util.getInstance().decodeToBytes(password.getBytes()), rsaUtil.getDefaultPrivate()));
+                userId = new String(rsaUtil.decrypt(Base64Util.getInstance().decodeToBytes(userId.getBytes()), rsaUtil.getDefaultPrivate()));
             }catch (Exception e){
                 isDecode = false;
                 e.printStackTrace();
