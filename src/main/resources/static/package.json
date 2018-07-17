@@ -1,0 +1,19 @@
+{
+  "name": "sina",
+  "version": "1.0.0",
+  "description": "**2018-05-08 08:14:18**",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaohuiSu/sina.git"
+  },
+  "author": "suxiaohui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XiaohuiSu/sina/issues"
+  },
+  "homepage": "https://github.com/XiaohuiSu/sina#readme"
+}
